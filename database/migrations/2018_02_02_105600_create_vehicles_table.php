@@ -24,16 +24,12 @@ class CreateVehiclesTable extends Migration
             $table->integer('cr'); // se renseigner
             $table->integer('battery_kwh');
             $table->string('picture');
-            $table->integer('rdtBattDeCharge'); // se renseigner
-            $table->integer('rdtBattCharge'); // se renseigner
-            $table->integer('rdtMoteur'); // se renseigner
-    		    $table->integer('charging_speed');
-    		    $table->integer('precup'); // se renseigner
-    		    $table->integer('human_power_w');
-    		    $table->integer('RdtPanneau'); // se renseingner
-    		    $table->integer('puissancePanneauW'); // se renseigner
+            $table->integer('rdtBattDeCharge'); //used twice in create // se renseigner
+            $table->integer('rdtBattCharge');// used as rdtBattCharge in edit // se renseigner
+            $table->integer('rdtMoteur');// se renseigner
+    		    $table->integer('precup');// se renseigner
     		    $table->string('note');
-    		    $table->integer('category_id');
+    		    $table->integer('category_id')->unsigned(); //unsigned because id is unsigned by default
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories');

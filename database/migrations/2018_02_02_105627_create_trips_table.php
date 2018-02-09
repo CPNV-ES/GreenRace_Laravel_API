@@ -17,7 +17,7 @@ class CreateTripsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('steps');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();//unsigned because id is unsigned by default
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
