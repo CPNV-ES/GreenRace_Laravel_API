@@ -14,3 +14,6 @@ il faut rajouter `Schema::defaultStringLength(191);` dans `app/Providers/AppServ
 
 ## Création de foreign_keys
 il faut que la clé étrangère soit de type integer et unsigned
+
+# Laravel Passport Login API
+https://laravel.com/docs/5.3/passport
