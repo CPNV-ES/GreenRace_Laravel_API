@@ -19,14 +19,16 @@ class Vehicle extends Model
       'rdtBattCharge',
       'rdtMoteur',
       'precup',
-      'note'
+      'note',
+      'picture',
+      'category_id'
     ];
     public static $rules = [
       'id_ves' => 'required',
       'description' => 'required',
       'category_id' => 'exists:categories,id'
     ];
-    
+
     public function category(){
       return $this->belongsTo('App\Category');
     }
