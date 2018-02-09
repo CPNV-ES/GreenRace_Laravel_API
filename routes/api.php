@@ -26,6 +26,7 @@ Route::get('category/{category}', 'CategoryController@show');
 Route::post('category', 'CategoryController@store');
 // modify
 Route::put('category/{category}', 'CategoryController@update');
+Route::patch('category/{category}', 'CategoryController@update');
 // delete
 Route::delete('category/{category}', 'CategoryController@delete');
 
@@ -38,6 +39,7 @@ Route::get('trip/{trip}', 'TripController@show');
 Route::post('trip', 'TripController@store');
 // modify
 Route::put('trip/{trip}', 'TripController@update');
+Route::patch('trip/{trip}', 'TripController@update');
 // delete
 Route::delete('trip/{trip}', 'TripController@delete');
 
@@ -50,5 +52,6 @@ Route::get('vehicle/{vehicle}', 'VehicleController@show');
 Route::post('vehicle', 'VehicleController@store');
 // modify
 Route::put('vehicle/{vehicle}', 'VehicleController@update');
+Route::patch('vehicle/{vehicle}', 'VehicleController@update');
 // delete
 Route::delete('vehicle/{vehicle}', 'VehicleController@delete');
