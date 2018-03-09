@@ -33,16 +33,16 @@ class Engine
 
   /**
    * La fonction renvoie l'énergie d'un tronçon en Wh
-   * @param masse
+   * @param int masse
    * @param scx
    * @param rendement
    * @param Cr
    * @param recup
-   * @param pente
-   * @param dist
-   * @param v1
-   * @param v2
-   * @param PA
+   * @param float pente
+   * @param float dist distance
+   * @param int v1 speed 1
+   * @param int v2 speed 2
+   * @param int PA puissance Accessoires
    * @return float energie d'un tronçon
    */
   private function fnEnergieDx($masse, $scx, $rendement, $Cr, $recup, $pente, $dist, $v1, $v2, $PA){
@@ -179,7 +179,6 @@ class Engine
   * @return Vehicle Le vehicule donné en paramètre mais avec les membres "usedEnergy" et un tableau
   *                contenant l'energie utilisée entre chaque waypoint
   */
-
   public function calculateUsedEnergies($waypoints, $vehicle, $speed){
       $vehicle->usedEnergy = 0;
       $nbrWaypoints = count($waypoints);
