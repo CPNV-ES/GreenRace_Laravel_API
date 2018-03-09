@@ -211,10 +211,6 @@ class Engine
         // Le véhicule ne peut pas utiliser plus d'énergie que celle disponnible
         if ($vehicle->usedEnergy < 0) $vehicle->usedEnergy = 0;
 
-        // TODO: Enlever ces lignes (elles sont la pour garder la compatibilité avec l'ancien javascript)
-        $vehicle->waypoints[$i]->distance = round($waypoints[$i]->distanceTotale, $this->precision);
-        $vehicle->waypoints[$i]->elevation = round($waypoints[$i]->elevation, $this->precision);
-        $vehicle->waypoints[$i]->pente = round($waypoints[$i]->pente, $this->precision);
       }
       return $vehicle;
   }
@@ -300,11 +296,6 @@ class Engine
       $ret->vehicles[$i]->consommation = $ret->vehicles[$i]->usedEnergy / $ret->distanceTot * 100;
       $ret->vehicles[$i]->batRestantePourcentage = $ret->vehicles[$i]->batRestante / $vehicles[$i]->batterieEnergiekWh * 100;
       $ret->vehicles[$i]->autonomie = $vehicles[$i]->batterieEnergiekWh / $ret->vehicles[$i]->consommation * 100;
-
-      // TODO: Enlever ces lignes (elles sont la pour garder la compatibilité avec l'ancien javascript)
-      $ret->vehicles[$i]->distot = round($ret->distanceTot, $this->precision);
-      $ret->vehicles[$i]->vitesse = round($vConsigne, $this->precision);
-      $ret->vehicles[$i]->energie = round($ret->vehicles[$i]->usedEnergy, $this->precision);
 
       // Si l'autonomie est plus grande ou égale à 1000 on affiche +1000
       if($ret->vehicles[$i]->autonomie >= 1000) $ret->vehicles[$i]->autonomie = '+' . 1000;
