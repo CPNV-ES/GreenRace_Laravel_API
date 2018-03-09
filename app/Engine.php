@@ -6,7 +6,6 @@ class Engine
 {
   private const $g = 9.81; // constante de gravité
   private const $ro = 1.2; // masse volumique de l'air en kg/m2
-  private const $precision = 2 // Nombre de décimales pour la précision
 
   public function __construct(){
   }
@@ -203,7 +202,7 @@ class Engine
         }
 
         $vehicle->waypoints[$i] = new stdClass();
-        $vehicle->waypoints[$i]->energy = round($energieDx, $this->precision);
+        $vehicle->waypoints[$i]->energy = $energieDx;
 
         // On cumule l'énergie nécessaire à chaque petit tronçon en kWh
         $vehicle->usedEnergy += $energieDx / 1000;
@@ -303,8 +302,8 @@ class Engine
 
     // TODO: problème avec les distance. distanceTot = distance totale de google
     //        distance utilisée pour le filtre = distance calculée par $this->fndistance (ce ne sont pas les mêmes)
-    $ret->distot = round($ret->distanceTot, $this->precision);
-    $ret->vitesse = round($vConsigne, $this->precision);
+    $ret->distot = $ret->distanceTot;
+    $ret->vitesse = $vConsigne;
 
     return json_encode($ret);
 
