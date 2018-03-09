@@ -4,31 +4,47 @@ namespace App;
 
 class Engine
 {
-  private $messages; // Error messages
   private const $g = 9.81; // constante de gravité
   private const $ro = 1.2; // masse volumique de l'air en kg/m2
-  private const $precision = 2; // Nombre de décimal pour la précision des calculs
+  private const $precision = 2 // Nombre de décimales pour la précision
 
   public function __construct(){
-    $this->messages = array('wrong_parameters'	=> 'Wrong parameters');
   }
 
   // TODO: Vérifier que cette algo soit juste ! les distances ont des comportements bizares des fois
   /**
    * Cette fonction calcule une distance sur terre avec deux points définis
    * par leur longitude et latitude (et tient compte de l'altitude)
+   * @param float lat1 latitude point A
+   * @param float lng1 longitude point A
+   * @param float alt1 altitude point A
+   * @param float lat2 latitude point B
+   * @param float lng2 longitude point B
+   * @param float alt2 altitude point B
+   * @return float distance between the two points
    */
   private function fnDistance($lat1, $lng1, $alt1, $lat2, $lng2, $alt2){
-    $d1 = 6378*($lat2-$lat1)*pi()/180;
-    $d2 = 6378*($lng2-$lng1)* (pi()/180) * cos(($lat1+$lat2)*pi()/360);
-    $d3 = ($alt1-$alt2)/1000; // les altitudes sont en m, les distances en km
-
-    $d = sqrt(pow($d1,2) + pow($d2,2) + pow($d3,2));
+    $d1 = 6378 * ($lat2 - $lat1) * pi() / 180;
+    $d2 = 6378 * ($lng2 - $lng1) * (pi() / 180) * cos(($lat1 + $lat2) * pi() / 360);
+    $d3 = ($alt1 - $alt2) / 1000; // les altitudes sont en m, les distances en km
+    $d = sqrt(pow($d1, 2) + pow($d2, 2) + pow($d3, 2));
 
     return $d;
   }
+
   /**
    * La fonction renvoie l'énergie d'un tronçon en Wh
+   * @param masse
+   * @param scx
+   * @param rendement
+   * @param Cr
+   * @param recup
+   * @param pente
+   * @param dist
+   * @param v1
+   * @param v2
+   * @param PA
+   * @return float energie d'un tronçon
    */
   private function fnEnergieDx($masse, $scx, $rendement, $Cr, $recup, $pente, $dist, $v1, $v2, $PA){
     $veq = 0; //stockera la vitesse équivalente en termes de carré de la vitesse (racine (v2^2+v1v2+v1^2)/3), voir identités remarquable en maths)
@@ -38,23 +54,18 @@ class Engine
     $EDx = 0; //stockera l'énergie avant de la retourner
     $EA = 0; //stockera l'énergie dépensée par les accessoires
 
-    $force = $masse * $this->g * $pente/100; //influence de la pente, attention la pente est en %
+    $force = $masse * $this->g * $pente / 100; //influence de la pente, attention la pente est en %
 
-    $veq = sqrt((pow($v2,2)+ $v1*$v2 + pow($v1,2) )/3); // voir calcul d'identité remarquable
-    $force += 0.5 * $this->ro * $scx * pow($veq/3.6,2); //influence de l'air
+    $veq = sqrt((pow($v2, 2) + $v1 * $v2 + pow($v1, 2)) / 3); // voir calcul d'identité remarquable
+    $force += 0.5 * $this->ro * $scx * pow($veq / 3.6, 2); //influence de l'air
     $force += $masse * $this->g * $Cr;// influence du frottement des pneus
-    $EDx = ($force * $dist *1000)/$rendement;//L'énergie est la force * distance (en mètres, donc *1000), en joules
-    $EDx += (0.5 * $masse * (pow($v2/3.6,2) - pow($v1/3.6,2)))/$rendement;
-    $EA = $dist * $PA/($v1 + $v2) * 2; //Le temps (dist / vMoyenne)*PuissanceAccessoires, en Wh
+    $EDx = ($force * $dist * 1000) / $rendement;//L'énergie est la force * distance (en mètres, donc *1000), en joules
+    $EDx += (0.5 * $masse * (pow($v2 / 3.6, 2) - pow($v1 / 3.6, 2)))/$rendement;
+    $EA = $dist * $PA / ($v1 + $v2) * 2; //Le temps (dist / vMoyenne)*PuissanceAccessoires, en Wh
     $EDx = $EDx + $EA * 3600 ; //Énergie en joules
 
-    if ($EDx>0) return $EDx/3600;
-    else return $EDx * $recup/3600;
-  }
-
-  // TODO: Vraiment utile cette methode ?
-  private function precisionNumber($n, $p){
-    return round( $n * pow(10, $p)) / pow(10, $p);
+    if ($EDx>0) return $EDx / 3600;
+    else return $EDx * $recup / 3600;
   }
 
   // TODO: Si on arrive à la fin du trajet et qu'un pont/tunnel a été commencé, il ne pourra pas se finir...
@@ -65,21 +76,26 @@ class Engine
   * L'élevation correspond aux valeurs renvoyées par l'api google et stockée sous forme de tableau
   * lat() et lng() sont des fonctions de l'API google map
   *
-  * @param array $waypoints
-  * @return array $filteredWaypoints
+  * @param array waypoints
+  * @return array filteredWaypoints
   */
   private function filtreElevation($waypoints){
 
     $istart = -1;
-    $waypoints[0]->distance =       0;
+    $waypoints[0]->distance = 0;
     $waypoints[0]->distanceTotale = 0;
-    $waypoints[0]->pente =          0;
-
+    $waypoints[0]->pente = 0;
     $nbrWaypoints = count($waypoints);
 
     for ($i = 1; $i < $nbrWaypoints; $i++) {
       // Calcul de la pente entre 2 waypoints consécutifs
-      $waypoints[$i]->distance = $this->fndistance($waypoints[$i-1]->location->lat, $waypoints[$i-1]->location->lng, 0, $waypoints[$i]->location->lat, $waypoints[$i]->location->lng, 0);
+      $waypoints[$i]->distance = $this->fndistance(
+        $waypoints[$i-1]->location->lat,
+        $waypoints[$i-1]->location->lng,
+        0, $waypoints[$i]->location->lat,
+        $waypoints[$i]->location->lng,
+        0
+      );
       $waypoints[$i]->pente = ($waypoints[$i]->elevation - $waypoints[$i-1]->elevation)/$waypoints[$i]->distance/10;
       $waypoints[$i]->distanceTotale = $waypoints[$i-1]->distanceTotale + $waypoints[$i]->distance;
 
@@ -90,8 +106,15 @@ class Engine
 
       // Si on a déjà un point de départ, on calcule la pente entre ce point de départ et le waypoint actuel ($i).
       else if ($istart != -1) {
-        $distStartpoint = $this->fndistance($waypoints[$istart]->location->lat, $waypoints[$istart]->location->lng, 0, $waypoints[$i]->location->lat, $waypoints[$i]->location->lng, 0);
-        $penteStartpoint = ($waypoints[$i]->elevation - $waypoints[$istart]->elevation)/$distStartpoint/10;
+        $distStartpoint = $this->fndistance(
+          $waypoints[$istart]->location->lat,
+          $waypoints[$istart]->location->lng,
+          0,
+          $waypoints[$i]->location->lat,
+          $waypoints[$i]->location->lng,
+          0
+        );
+        $penteStartpoint = ($waypoints[$i]->elevation - $waypoints[$istart]->elevation) / $distStartpoint / 10;
 
         /*
         Si la pente dans le tunnel/pont atteind les 7.5% et que la pente à la fin du tunnel/pont est correcte,
@@ -118,7 +141,7 @@ class Engine
             $icurrent = $istart + $y;
             $oldElevation = $waypoints[$icurrent]->elevation;
             $waypoints[$icurrent]->elevation = $waypoints[$istart]->elevation + (($waypoints[$icurrent]->distanceTotale - $waypoints[$istart]->distanceTotale) * $deltaElevation / $deltaDistance);
-            $waypoints[$icurrent]->pente = ($waypoints[$icurrent]->elevation - $waypoints[$icurrent - 1]->elevation)/$waypoints[$icurrent]->distance/10;
+            $waypoints[$icurrent]->pente = ($waypoints[$icurrent]->elevation - $waypoints[$icurrent - 1]->elevation) / $waypoints[$icurrent]->distance / 10;
           }
           $istart = -1;
         }
@@ -152,14 +175,13 @@ class Engine
   * Calcul de l'énergie dépensée entre chaque waypoint et de l'énergie totale consommée
   *
   * @param array $waypoints Les points donnés par Google
-  * @param object $vehicle Le vehicule en question
+  * @param Vehicle $vehicle Le vehicule en question
   * @param int $speed La vitesse a utiliser en Km/h
-  * @return object Le vehicule donné en paramètre mais avec les membres "usedEnergy" et un tableau
+  * @return Vehicle Le vehicule donné en paramètre mais avec les membres "usedEnergy" et un tableau
   *                contenant l'energie utilisée entre chaque waypoint
   */
 
   public function calculateUsedEnergies($waypoints, $vehicle, $speed){
-
       $vehicle->usedEnergy = 0;
       $nbrWaypoints = count($waypoints);
 
@@ -204,16 +226,15 @@ class Engine
   *     freine jusqu'a 6% de vitesse en moins et réaccélére à la vitesse de consigne
   * Energie en plus: d * (x/125) * m * (vo/3.6)^2 * (1/Rendement - Rendement Récup)
   *
-  * @param int $distanceTotal La distance totale du trajet
+  * @param float $distanceTotal La distance totale du trajet
   * @param int $lvlSport Le niveau de conduite sportive (entre 0 et 10)
-  * @param object $vehicle La voiture utilisée
+  * @param Vehicle $vehicle La voiture utilisée
   * @param int $speed La vitesse utilisée sur le trajet
   *
   * @return float L'énergie consommée en plus suivant le mode de conduite (en Watts)
   */
   public function energyByDrivingStyle($distanceTotal, $lvlSport, $vehicle, $speed){
-    return $distanceTotal * $lvlSport/500 * $vehicle->poidsVideKg * pow($speed/3.6, 2) * $lvlSport * (1/$vehicle->rdtMoteur - $vehicle->precup);
-
+    return $distanceTotal * $lvlSport/500 * $vehicle->poidsVideKg * pow($speed / 3.6, 2) * $lvlSport * (1 / $vehicle->rdtMoteur - $vehicle->precup);
   }
 
   /**
@@ -222,7 +243,6 @@ class Engine
   * @return string Le JSON contenant tous les résultats des calculs
   */
   public function calculateValues(){
-
     // Init et vérification des variables
     $ret = new StdClass();
 
@@ -282,11 +302,11 @@ class Engine
       $ret->vehicles[$i]->autonomie = $vehicles[$i]->batterieEnergiekWh / $ret->vehicles[$i]->consommation * 100;
 
       //  Arrondis
-      $ret->vehicles[$i]->usedEnergy =                round($ret->vehicles[$i]->usedEnergy, $this->precision);
-      $ret->vehicles[$i]->batRestante =               round($ret->vehicles[$i]->batRestante, $this->precision);
-      $ret->vehicles[$i]->batRestantePourcentage =    round($ret->vehicles[$i]->batRestantePourcentage, $this->precision);
-      $ret->vehicles[$i]->consommation =              round($ret->vehicles[$i]->consommation, $this->precision);
-      $ret->vehicles[$i]->autonomie =                 round($ret->vehicles[$i]->autonomie, $this->precision);
+      $ret->vehicles[$i]->usedEnergy = round($ret->vehicles[$i]->usedEnergy, $this->precision);
+      $ret->vehicles[$i]->batRestante = round($ret->vehicles[$i]->batRestante, $this->precision);
+      $ret->vehicles[$i]->batRestantePourcentage = round($ret->vehicles[$i]->batRestantePourcentage, $this->precision);
+      $ret->vehicles[$i]->consommation = round($ret->vehicles[$i]->consommation, $this->precision);
+      $ret->vehicles[$i]->autonomie = round($ret->vehicles[$i]->autonomie, $this->precision);
 
       // TODO: Enlever ces lignes (elles sont la pour garder la compatibilité avec l'ancien javascript)
       $ret->vehicles[$i]->distot = round($ret->distanceTot, $this->precision);
