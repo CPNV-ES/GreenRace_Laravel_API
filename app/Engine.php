@@ -301,13 +301,6 @@ class Engine
       $ret->vehicles[$i]->batRestantePourcentage = $ret->vehicles[$i]->batRestante / $vehicles[$i]->batterieEnergiekWh * 100;
       $ret->vehicles[$i]->autonomie = $vehicles[$i]->batterieEnergiekWh / $ret->vehicles[$i]->consommation * 100;
 
-      //  Arrondis
-      $ret->vehicles[$i]->usedEnergy = round($ret->vehicles[$i]->usedEnergy, $this->precision);
-      $ret->vehicles[$i]->batRestante = round($ret->vehicles[$i]->batRestante, $this->precision);
-      $ret->vehicles[$i]->batRestantePourcentage = round($ret->vehicles[$i]->batRestantePourcentage, $this->precision);
-      $ret->vehicles[$i]->consommation = round($ret->vehicles[$i]->consommation, $this->precision);
-      $ret->vehicles[$i]->autonomie = round($ret->vehicles[$i]->autonomie, $this->precision);
-
       // TODO: Enlever ces lignes (elles sont la pour garder la compatibilité avec l'ancien javascript)
       $ret->vehicles[$i]->distot = round($ret->distanceTot, $this->precision);
       $ret->vehicles[$i]->vitesse = round($vConsigne, $this->precision);
@@ -315,16 +308,6 @@ class Engine
 
       // Si l'autonomie est plus grande ou égale à 1000 on affiche +1000
       if($ret->vehicles[$i]->autonomie >= 1000) $ret->vehicles[$i]->autonomie = '+' . 1000;
-    }
-
-    // Arrondis des chiffres des waypoints et de la distance totale
-    $nbrWaypoints = count($ret->waypoints);
-
-    for ($i = 0; $i < $nbrWaypoints; $i++) {
-      $ret->waypoints[$i]->elevation = round($ret->waypoints[$i]->elevation, $this->precision);
-      $ret->waypoints[$i]->distance = round($ret->waypoints[$i]->distance, $this->precision);
-      $ret->waypoints[$i]->distanceTotale = round($ret->waypoints[$i]->distanceTotale, $this->precision);
-      $ret->waypoints[$i]->pente = round($ret->waypoints[$i]->pente, $this->precision);
     }
 
     // TODO: problème avec les distance. distanceTot = distance totale de google
