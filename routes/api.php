@@ -66,4 +66,7 @@ Route::group(['prefix' => 'v1'], function(){
   // get by id
   Route::get('vehicle/{vehicle}', 'VehicleController@show');
 
+  // Engine route
+  Route::get('engine', 'EngineController@calculate');
+
 });
