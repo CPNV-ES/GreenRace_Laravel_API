@@ -21,6 +21,28 @@ https://laravel.com/docs/5.3/passport
 # Laravel login API without Passport
 https://gistlog.co/JacobBennett/090369fbab0b31130b51
 
+# Routes API
+`api entry point: /api/v1/`  
+
+| Action | Route | Params | Auth | Description |
+| ------ | ----- | ------ | ---- | ----------- |
+| GET | engine | - lSport='1-10'<br> -waypoints=''<br> -steps=''<br> - distanceType=''<br> - vConsigne=''<br> - vehicles=''<br> | NO | Get the engine for the car |
+| GET | categories | | No | Get all existing categories |
+| GET | category/{id} | | No | Get details about a specific category |
+| POST | category | - name='{string}' | Yes | Create a new category |
+| PUT / PATCH | category/{id} | - name='{string}' | Yes | Modify a category |
+| DELETE | category/{id} | | Yes | Delete a category |
+| GET | trips | | No | Get all trips |
+| GET | trip/{id} | | No | Get a trip |
+| POST | trip | - name='{string}'<br> - steps='{string}' | Yes | Create a trip |
+| PUT / PATCH | trip/{id} | - name='{string}'<br> - steps='{string}' | Yes | Modify a trip |
+| DELETE | trip/{id} | | Yes | Delete a trip |
+| GET | vehicles | | No | Get all vehicles |
+| GET | vehicle/{id} | | No | Get a vehicle |
+| POST | vehicle | - id_ves='{number}'<br> - description='{string}'<br> -weight_empty_kg='{number}'<br> - electric_power_kw='{number}'<br> - max_speed='{number}'<br> - scx='{number}'<br> - cr='{number}'<br> - battery_kwh='{number}'<br> - picture='{url}'<br> - rdtBattDeCharge='{number}'<br> - rdtBattCharge='{number}'<br> - rdtMoteur='{number}'<br> - precup='{number}'<br> - note='{string}'<br> - category_id='{id}'<br> | Yes | Create a new vehicle |
+| PUT / PATCH | vehicle/{id} | - id_ves='{number}'<br> - description='{string}'<br> -weight_empty_kg='{number}'<br> - electric_power_kw='{number}'<br> - max_speed='{number}'<br> - scx='{number}'<br> - cr='{number}'<br> - battery_kwh='{number}'<br> - picture='{url}'<br> - rdtBattDeCharge='{number}'<br> - rdtBattCharge='{number}'<br> - rdtMoteur='{number}'<br> - precup='{number}'<br> - note='{string}'<br> - category_id='{id}'<br> | Yes | Modify a vehicle |
+| DELETE | vehicle/{id} | | Yes | Delete a vehicle |
+
 # Routes Oauth
 ## clients routes
 | Action | Route | Params | Description |

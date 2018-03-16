@@ -236,20 +236,9 @@ class Engine
   *
   * @return string Le JSON contenant tous les résultats des calculs
   */
-  public function calculateValues(){
-    // Init et vérification des variables
-    $ret = new StdClass();
-
-    // Si la requête ajax n'a pas de donnée "request", on quitte avec un message d'erreur
-    if(!Input::has('request')){
-      $ret->error = 'Request informations are needed';
-      return json_encode($ret);
-    }
-
-    //Transforme les valeurs données sous forme de tableau par Laravel en objets
-    $json =  json_decode(Input::get('request'));
+  public function calculateValues($json, $ret){
     $params = $json->request->params;
-
+    
     //$sldSport correspond à la valeur choisie par l'utilisateur avec le slider du type de conduite
     $lSport = intval($params->lSport);
 
