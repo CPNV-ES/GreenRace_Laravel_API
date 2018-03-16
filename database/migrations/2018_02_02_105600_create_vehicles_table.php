@@ -21,7 +21,7 @@ class CreateVehiclesTable extends Migration
             $table->integer('electric_power_kw');
             $table->integer('max_speed');
             $table->integer('scx'); // se renseigner
-            $table->integer('cr'); // se renseigner
+            $table->integer('cr'); // coefficientrollingresistance
             $table->integer('battery_kwh');
             $table->string('picture');
             $table->integer('rdtBattDeCharge'); //used twice in create // se renseigner
