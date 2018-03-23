@@ -18,15 +18,12 @@ il faut que la clé étrangère soit de type integer et unsigned
 # Laravel Passport Login API
 https://laravel.com/docs/5.3/passport
 
-# Laravel login API without Passport
-https://gistlog.co/JacobBennett/090369fbab0b31130b51
-
 # Routes API
 `api entry point: /api/v1/`  
 
 | Action | Route | Params | Auth | Description |
 | ------ | ----- | ------ | ---- | ----------- |
-| GET | engine | - lSport='1-10'<br> -waypoints=''<br> -steps=''<br> - distanceType=''<br> - vConsigne=''<br> - vehicles=''<br> | NO | Get the engine for the car |
+| GET | engine | - lSport='[1-10]'<br> -waypoints=''<br> -steps=''<br> - distanceType=''<br> - vConsigne=''<br> - vehicles=''<br> | NO | Get the engine for the car |
 | GET | categories | | No | Get all existing categories |
 | GET | category/{id} | | No | Get details about a specific category |
 | POST | category | - name='{string}' | Yes | Create a new category |
