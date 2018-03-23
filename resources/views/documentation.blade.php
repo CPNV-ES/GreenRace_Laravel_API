@@ -8,7 +8,7 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <pre>api entry point: <kbd>/api/v1/</kbd></pre>
+      <pre>api entry point: <kbd>/api/v1/</kbd><br>format: <kbd>json</kbd></pre>
     </div>
     <div class="col-xs-12">
       <table class="table table-striped table-bordered">
