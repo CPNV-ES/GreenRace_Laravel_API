@@ -89,7 +89,7 @@
                   <a href="{{ route('register') }}">Register</a>
                   @endauth
                   @endif
-                  <a href="{{ url('/documentation')}}">API</a>
+                  <a href="{{ url('/documentation')}}">Doc</a>
                 </div>
             </div>
         </div>
